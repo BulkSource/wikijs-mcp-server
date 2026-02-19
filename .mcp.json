@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "wikijs": {
+      "type": "http",
+      "url": "http://localhost:3200/mcp",
+      "headers": {
+        "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGkiOjEsImdycCI6MywiaWF0IjoxNzcxMTkzODcxLCJleHAiOjE4NjU4NjY2NzEsImF1ZCI6InVybjp3aWtpLmpzIiwiaXNzIjoidXJuOndpa2kuanMifQ.WGk83EvwscMShC-hm3eWD341HYm3Nnw-vSt71jIlg6usgVaIXRm7Fj7G92wBp0UJeN0KZf3aDQmC9Y_Vanp0U3gh9QLME72ckMUVnxrbm_0IU0erEJ0NUaSg6vfNYmD7QJzu_DRvbWm2CXyUxOtdVCnb6PG7MXfDGZYBRQzucxBKicqM_Ce_BfND2J41yBv56FfLvZ8-Q1zn5kHnEhiiinTnPrcgNlt8yirHPZ1mlHGLxVC5tHBiaGrYFmIim4D2ft7FLt-NdB0sAjtu-DklmG0nw3BPjj_P58zQvWSIS4algsucPHVM4n4iXIfGjk1wJoFEs27Sn0511-x_BYT3QQ"
+      }
+    }
+  }
+}
