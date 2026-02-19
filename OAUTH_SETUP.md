@@ -172,8 +172,10 @@ Each user does this once:
 4. A browser window opens → sign in with your Google (act.software) account
 5. Done — Claude Desktop now has access to all Wiki.js tools
 
-Edits made through Claude Desktop are attributed to the correct user in Wiki.js
-page history (same as Claude Code).
+**Note on edit attribution:** All MCP edits (Claude Desktop and Claude Code alike)
+appear in Wiki.js page history as authored by the **"API"** service account — this
+is a Wiki.js v2 limitation.  The real author is recorded in the MCP audit log at
+`/home/wikiadmin/mcp-logs/audit.log`.
 
 > **First-time users:** you must have logged in to the Wiki.js web UI at least
 > once before connecting via Claude Desktop.  The OAuth provisioning step looks
