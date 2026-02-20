@@ -54,7 +54,14 @@ export async function fixPageAuthor(
   if (!db) return;
 
   try {
-    const result = await db.query(
+    // Patch the pages table — this is what the Wiki.js UI displays as "last edited by"
+    const pagesResult = await db.query(
+      `UPDATE pages SET "authorId" = $1 WHERE id = $2`,
+      [authorId, pageId]
+    );
+
+    // Patch the most recent pageHistory row — shown in the page history view
+    const historyResult = await db.query(
       `UPDATE "pageHistory"
        SET "authorId" = $1
        WHERE id = (
@@ -65,8 +72,9 @@ export async function fixPageAuthor(
        )`,
       [authorId, pageId]
     );
+
     console.log(
-      `[DB] fixPageAuthor: pageId=${pageId} authorId=${authorId} → ${result.rowCount} row(s) updated`
+      `[DB] fixPageAuthor: pageId=${pageId} authorId=${authorId} → pages: ${pagesResult.rowCount} row(s), pageHistory: ${historyResult.rowCount} row(s)`
     );
   } catch (err: any) {
     console.error(`[DB] fixPageAuthor failed for pageId=${pageId}:`, err.message);
