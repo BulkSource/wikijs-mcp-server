@@ -999,7 +999,7 @@ class WikiJsAPI {
       }
       const page = data.pages.create.page;
       if (this.userId) {
-        fixPageAuthor(page.id, this.userId).catch(() => {});
+        fixPageAuthor(page.id, this.userId).then(() => flushWikiCache()).catch(() => {});
       }
       return {
         ...page,
@@ -1105,14 +1105,14 @@ class WikiJsAPI {
           "[WikiJsAPI] updatePage: page not returned, possibly insufficient permissions"
         );
         if (this.userId) {
-          fixPageAuthor(id, this.userId).catch(() => {});
+          fixPageAuthor(id, this.userId).then(() => flushWikiCache()).catch(() => {});
         }
         return await this.getPage(id);
       }
 
       const page = data.pages.update.page;
       if (this.userId) {
-        fixPageAuthor(page.id, this.userId).catch(() => {});
+        fixPageAuthor(page.id, this.userId).then(() => flushWikiCache()).catch(() => {});
       }
       return {
         ...page,
@@ -1706,6 +1706,23 @@ class WikiJsAPI {
 const WIKIJS_BASE_URL = process.env.WIKIJS_BASE_URL || "http://localhost:3000";
 const WIKIJS_TOKEN = process.env.WIKIJS_TOKEN || "";
 const WIKIJS_LOCALE = process.env.WIKIJS_LOCALE || "en";
+
+// Admin client used only for post-mutation cache flush (requires full-access token).
+const adminFlushClient = new GraphQLClient(`${WIKIJS_BASE_URL}/graphql`, {
+  headers: {
+    Authorization: `Bearer ${process.env.WIKIJS_ADMIN_TOKEN || WIKIJS_TOKEN}`,
+  },
+});
+
+async function flushWikiCache(): Promise<void> {
+  try {
+    const mutation = gql`mutation { site { flushCache { responseResult { succeeded } } } }`;
+    await adminFlushClient.request(mutation);
+    console.log("[WikiJsAPI] Site cache flushed after author patch");
+  } catch (err: any) {
+    console.error("[WikiJsAPI] Cache flush failed (non-fatal):", err.message);
+  }
+}
 // Public URL used in page links returned to clients. Falls back to WIKIJS_BASE_URL
 // so existing deployments work without change, but set WIKIJS_PUBLIC_URL to the
 // public hostname (e.g. https://knb.bulksource.com) so Claude Desktop can open links.
