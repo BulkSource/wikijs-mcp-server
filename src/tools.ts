@@ -1716,9 +1716,9 @@ const adminFlushClient = new GraphQLClient(`${WIKIJS_BASE_URL}/graphql`, {
 
 async function flushWikiCache(): Promise<void> {
   try {
-    const mutation = gql`mutation { site { flushCache { responseResult { succeeded } } } }`;
+    const mutation = gql`mutation { pages { flushCache { responseResult { succeeded } } } }`;
     await adminFlushClient.request(mutation);
-    console.log("[WikiJsAPI] Site cache flushed after author patch");
+    console.log("[WikiJsAPI] Page cache flushed after author patch");
   } catch (err: any) {
     console.error("[WikiJsAPI] Cache flush failed (non-fatal):", err.message);
   }
